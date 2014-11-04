@@ -9,6 +9,15 @@ var db = require("mongojs").connect(uri,collections);
 /* GET users listing. */
 router.get('/:action', function(req, res) {
 
+  if (req.params.action == 'get') {
+  	db.contact.find(null, function(err, contacts) {
+			if (err || !contacts) {
+				console.log("No contacts found");
+			} else {
+				res.send(contacts);
+			}
+		});
+  }
   if (req.params.action == 'save') {
   	db.contact.find(null, function(err, contacts) {
 			if (err || !contacts) {
@@ -18,7 +27,6 @@ router.get('/:action', function(req, res) {
 			}
 		});
   }
-  res.send(req.params,200);
 });
 
 module.exports = router;

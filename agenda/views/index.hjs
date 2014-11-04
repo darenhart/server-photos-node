@@ -10,24 +10,16 @@
 		<script src="javascripts/bootstrap.js"></script>
 
 		<style>
-			.link {
-				border: solid 1px #bbb;
-				margin: 5px;
-				padding: 5px;
-				max-width: 200px;
-			}
-			.link img {
-				max-height: 150px;
-			}
+		
 		</style>
 	</head>
-	<body ng-controller='AgendaCtrl'>
+	<body>
 
 		<div class='container'>
 		
 			<h1>Agenda</h1>
 			
-			<div ng-controller='ContactCtrl' ng-show='logged_in'>
+			<div ng-controller='ContactCtrl'>
 				<section>
 					
 					<form ng-submit='save()' class='form-horizontal'>
@@ -50,7 +42,7 @@
 					</form>
 				</section>
 				<section>
-					<div ng-repeat='contact in contacts | orderBy:order' class='contacts'>
+					<div ng-repeat='contact in contacts | orderBy:order'>
 						<p>{{contact.name}}</p>
 						<p>{{contact.phone}}</p>
 						<button ng-click='delete(contact.id)'>Delete</button>
