@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app='Agenda'>
+	<head>
+		<script src="javascripts/angular.min.js"></script>
+		<script src="javascripts/AgendaController.js"></script>
+		<script src="javascripts/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="stylesheets/bootstrap.css">
+		<link rel="stylesheet" href="stylesheets/bootstrap-theme.css">
+		<script src="javascripts/bootstrap.js"></script>
+
+		<style>
+
+		</style>
+	</head>
+	<body>
+
+		<div class='container'>
+		
+			<h1>Agenda</h1>
+			
+			<div ng-controller='ContactCtrl'>
+				<section>
+					
+					<form ng-submit='save()' class='form-horizontal'>
+						<label class="control-label">Name</label>
+						<div class="control-group">
+							<div class="controls">
+								<input placeholder='Name' ng-model='contact.name'>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Phone</label>
+							<div class="controls">
+								<input placeholder='Phone' ng-model='contact.phone'>
+							</div>
+						</div>
+						<div class="control-group">
+							<input type='submit' value='Add' class="btn" >
+						</div>
+						<span>{{tx.messageSaveContact}}</span>
+					</form>
+				</section>
+				<section>
+					<table class="table">
+						<tbody>
+							<tr ng-repeat='contact in contacts | orderBy:order'>
+								<td>
+									{{contact.name}}
+								</td>
+								<td>
+									{{contact.phone}}
+								</td>
+								<td>
+									<button ng-click='delete(contact._id)' class="btn">Delete</button>
+								</td>
+							</tr>
+							<tr ng-hide='contacts.length'><td>No contact</td></tr>
+						</tbody>
+					</table>
+					<p>{{tx.messageContacts}}</p>
+				</section>
+			</div>
+		</div>
+	</body>
+</html>
