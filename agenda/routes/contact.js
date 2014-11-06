@@ -1,14 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-// db
-var uri = "agenda";
-var collections = ["contact"];
-var db = require("mongojs").connect(uri,collections);
 
 router.get('/get', function(req, res) {
-	db.contact.find(null, function(err, contacts) {
-		if (err || !contacts) {
+	req.Contact.find(null, function(err,contacts) {
+	  if (err || !contacts) {
 			console.log("No contacts found");
 		} else {
 			res.send(contacts);
@@ -16,9 +12,28 @@ router.get('/get', function(req, res) {
 	});
 });
 
-router.post('/save', function(req, res) {
-	
+router.post('/remove', function(req, res) {
+	req.Contact.findOneAndRemove({_id:req.body._id}, function (err, contact) {
+		if (err || !contact) {
+			console.log("Error removing contact");
+		} else {
+			res.send(contact);
+		}
+	});
 });
 
+router.post('/save', function(req, res) {
+	var c = new req.Contact(req.body);
+	c.save(function (err, contact) {
+		if (err || !contact) {
+			console.log("Error saving contact");
+			if (err) {
+				res.send(err);
+			}
+		} else {
+			res.send(contact);
+		}
+	});
+});
 
 module.exports = router;

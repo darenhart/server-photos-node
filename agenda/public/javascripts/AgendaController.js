@@ -9,15 +9,22 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 		if (!$scope.contact) {
 			return;
 		}
-		console.log('saving');
 		$http.post('contact/save', $scope.contact).success(function(data) {
-			
+			$scope.tx.messageSaveContact = '';
+			if (data._id) {
+				$scope.contacts.push(data);	
+				$scope.contact = '';
+			} else if (data.message) {
+				$scope.tx.messageSaveContact = data.message;
+			}
 		});
 	};
 
-	$scope.delete = function(contactId) {
-		console.log('deleting '+contactId);
-		$http.post('contact/delete', {id:contactId}).success(function(data) {
+	$scope.remove = function(contact) {
+		$http.post('contact/remove', contact).success(function(data) {
+			if (data._id) {
+				$scope.contacts = $scope.contacts.filter(function(el) { return el._id!=contact._id;})	
+			}
 		});
 	};
 	

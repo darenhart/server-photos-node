@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require("mongoose");
 
 var routes = require('./routes/index');
 var contacts = require('./routes/contact');
@@ -21,6 +22,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// db
+var uri = "mongodb://localhost/agenda";
+var db = mongoose.connect(uri);
+var Schema = mongoose.Schema;
+var contactSchema = new Schema({
+    name: String,
+    phone: Number
+});
+var collection = 'contact';
+var Contact = mongoose.model('Contact', contactSchema, collection);
+
+app.use(function(req,res,next){
+    req.Contact = Contact;
+    next();
+});
 
 app.use('/', routes);
 app.use('/contact', contacts);
