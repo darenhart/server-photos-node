@@ -29,7 +29,7 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 	};
 	
 	$http.get('contact/get').success(function(data) {
-		$scope.order = '-name';
+		$scope.order = '-_id';
 		$scope.contacts = data;
 	});
 }]);
