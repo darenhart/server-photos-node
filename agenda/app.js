@@ -33,7 +33,6 @@ var contactSchema = new Schema({
 });
 var collection = 'contact';
 var Contact = mongoose.model('Contact', contactSchema, collection);
-
 app.use(function(req,res,next){
     req.Contact = Contact;
     next();

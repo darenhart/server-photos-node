@@ -27,6 +27,21 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 			}
 		});
 	};
+
+	$scope.update = function(contact) {
+		if (contact.updating) {
+			contact.updating = false;
+			var contact_update = {_id:contact._id,name:contact.name,phone:contact.phone};
+			$http.post('contact/update', contact_update).success(function(data) {
+				$scope.tx.messageContacts = '';
+				if (data.errmsg) {
+					$scope.tx.messageContacts = data.errmsg;
+				}
+			});
+		} else {
+			contact.updating = true;	
+		}
+	};
 	
 	$http.get('contact/get').success(function(data) {
 		$scope.order = '-_id';

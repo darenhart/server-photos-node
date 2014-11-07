@@ -36,4 +36,19 @@ router.post('/save', function(req, res) {
 	});
 });
 
+router.post('/update', function(req, res) {
+	var contact_update = {name:req.body.name,phone:req.body.phone};
+	console.log(contact_update);
+	req.Contact.findByIdAndUpdate(req.body._id, contact_update, function (err, numAffected) {
+		if (err || !numAffected) {
+			console.log("Error updating contact");
+			if (err) {
+				res.send(err);
+			}
+		} else {
+			res.send(numAffected);
+		}
+	});
+});
+
 module.exports = router;

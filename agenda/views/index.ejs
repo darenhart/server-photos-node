@@ -47,12 +47,17 @@
 					<tr ng-repeat='contact in contacts | filter:search | orderBy:order'>
 						<td></td>
 						<td>
-							{{contact.name}}
+							<p ng-hide="contact.updating">{{contact.name}}</p>
+							<input ng-show="contact.updating" ng-model="contact.name" value="{{contact.name}}">
 						</td>
 						<td>
-							{{contact.phone}}
+							<p ng-hide="contact.updating">{{contact.phone}}</p>
+							<input ng-show="contact.updating" ng-model="contact.phone" value="{{contact.phone}}">
 						</td>
 						<td>
+							<button ng-click='update(contact)' class="btn">
+								<span class="glyphicon glyphicon-{{contact.updating ? 'ok' : 'pencil'}}"></span>
+							</button>
 							<button ng-click='remove(contact)' class="btn">
 								<span class="glyphicon glyphicon-trash"></span>
 							</button>
