@@ -40,7 +40,7 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 	$scope.remove = function(contact) {
 		$http.post('api/contact/remove', contact).success(function(data) {
 			if (data._id) {
-				$scope.contacts = $scope.contacts.filter(function(el) { return el._id!=contact._id;})	
+				$scope.contacts = $scope.contacts.filter(function(el) { return el._id!=contact._id;});
 			}
 		});
 	};

@@ -8,6 +8,7 @@ var mongoose = require("mongoose");
 
 var routes = require('./routes/index');
 var contacts = require('./routes/contact');
+var photos  = require('./routes/photo');
 
 var app = express();
 
@@ -30,22 +31,31 @@ app.use(function(req, res, next) {
 });
 
 // db
-var uri = "mongodb://localhost/teste";
+var uri = "mongodb://0.0.0.0/teste";
 var db = mongoose.connect(uri);
 var Schema = mongoose.Schema;
+// contact schema
 var contactSchema = new Schema({
     name: String,
     phone: Number
 });
 var collection = 'contact';
 var Contact = mongoose.model('Contact', contactSchema, collection);
+// photo scema
+var photoSchema = new Schema({
+    img: { data: Buffer, contentType: String } 
+});
+var collection = 'photo';
+var Photo = mongoose.model('Photo', contactSchema, collection);
 app.use(function(req,res,next){
     req.Contact = Contact;
+    req.Photo = Photo;
     next();
 });
 
 app.use('/', routes);
 app.use('/api/contact', contacts);
+app.use('/api/photo', photos);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

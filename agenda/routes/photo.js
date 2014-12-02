@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-
 router.get('/get', function(req, res) {
 	req.Contact.find(null, function(err,contacts) {
 	  if (err || !contacts) {
@@ -23,8 +22,11 @@ router.post('/remove', function(req, res) {
 });
 
 router.post('/save', function(req, res) {
-	var c = new req.Contact(req.body);
-	c.save(function (err, contact) {
+	console.log('body: ',req.body);
+	res.send('test');
+	/*
+	var p = new req.Photo(req.body);
+	p.save(function (err, contact) {
 		if (err || !contact) {
 			console.log("Error saving contact");
 			if (err) {
@@ -34,6 +36,7 @@ router.post('/save', function(req, res) {
 			res.send(contact);
 		}
 	});
+*/
 });
 
 router.post('/update', function(req, res) {
