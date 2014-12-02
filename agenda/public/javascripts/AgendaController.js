@@ -1,5 +1,22 @@
+'use strict'
 
-var app = angular.module('Agenda', []);
+var app = angular.module('Agenda', ['ngRoute']);
+
+app.config(['$routeProvider', function($routeProvider) {
+	$routeProvider.
+		when('/contacts', {
+			templateUrl: 'contact-list',
+			controller: 'ContactCtrl'
+		}).
+		when('/about', {
+			templateUrl: 'about',
+			controller: 'AboutCtrl'
+		}).
+		otherwise({
+	      redirectTo: '/contacts'
+    	})
+	;
+}]);
 
 app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 	$scope.contacts = [];
@@ -9,7 +26,7 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 		if (!$scope.contact) {
 			return;
 		}
-		$http.post('contact/save', $scope.contact).success(function(data) {
+		$http.post('api/contact/save', $scope.contact).success(function(data) {
 			$scope.tx.messageSaveContact = '';
 			if (data._id) {
 				$scope.contacts.push(data);	
@@ -21,7 +38,7 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 	};
 
 	$scope.remove = function(contact) {
-		$http.post('contact/remove', contact).success(function(data) {
+		$http.post('api/contact/remove', contact).success(function(data) {
 			if (data._id) {
 				$scope.contacts = $scope.contacts.filter(function(el) { return el._id!=contact._id;})	
 			}
@@ -32,7 +49,7 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 		if (contact.updating) {
 			contact.updating = false;
 			var contact_update = {_id:contact._id,name:contact.name,phone:contact.phone};
-			$http.post('contact/update', contact_update).success(function(data) {
+			$http.post('api/contact/update', contact_update).success(function(data) {
 				$scope.tx.messageContacts = '';
 				if (data.errmsg) {
 					$scope.tx.messageContacts = data.errmsg;
@@ -43,10 +60,17 @@ app.controller('ContactCtrl', ['$scope','$http', function($scope, $http) {
 		}
 	};
 	
-	$http.get('contact/get').success(function(data) {
+	$http.get('api/contact/get').success(function(data) {
 		$scope.order = '-_id';
 		$scope.contacts = data;
 	});
 }]);
+
+app.controller('AboutCtrl', ['$scope', function($scope) {
+	$scope.message = 'App de teste';
+}]);
+
+
+
 
 

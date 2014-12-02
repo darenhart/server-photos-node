@@ -3,13 +3,15 @@ var router = express.Router();
 
 
 router.get('/get', function(req, res) {
+	setTimeout(function(){
 	req.Contact.find(null, function(err,contacts) {
 	  if (err || !contacts) {
 			console.log("No contacts found");
 		} else {
 			res.send(contacts);
 		}
-	});
+	});}
+		,1000);
 });
 
 router.post('/remove', function(req, res) {

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html ng-app='Agenda'>
 	<head>
-		<script src="javascripts/angular.min.js"></script>
+		<script src="javascripts/angular.js"></script>
+		<script src="javascripts/angular-route.js"></script>
 		<script src="javascripts/AgendaController.js"></script>
 		<script src="javascripts/jquery.min.js"></script>
 
@@ -13,60 +14,20 @@
 	</head>
 	<body>
 
-		<div ng-controller='ContactCtrl' class='container'>
-		
-			<h1>Agenda</h1>
-		
-			<form ng-submit='save()' class="form-inline">
-				<div class="form-group">
-					<input class="form-control" placeholder='Name' ng-model='contact.name'>
-				</div>
-				<div class="form-group">
-					<input class="form-control" placeholder='Phone' ng-model='contact.phone'>
-				</div>
-				<button type='submit' class="btn" >
-					<span class="glyphicon glyphicon-plus"></span>
-				</button>
-				<p class="text-warning bg-danger">{{tx.messageSaveContact}}</p>
-			</form>
 
-			<table class="table container">
-				<thead>
-					<tr>
-						<th></th>
-						<th>
-							<input class="form-control" placeholder="Name" ng-model='search.name'>
-						</th>
-						<th>
-							<input class="form-control" placeholder="Phone" ng-model='search.phone'>
-						</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat='contact in contacts | filter:search | orderBy:order'>
-						<td></td>
-						<td>
-							<p ng-hide="contact.updating">{{contact.name}}</p>
-							<input ng-show="contact.updating" ng-model="contact.name" value="{{contact.name}}">
-						</td>
-						<td>
-							<p ng-hide="contact.updating">{{contact.phone}}</p>
-							<input ng-show="contact.updating" ng-model="contact.phone" value="{{contact.phone}}">
-						</td>
-						<td>
-							<button ng-click='update(contact)' class="btn">
-								<span class="glyphicon glyphicon-{{contact.updating ? 'ok' : 'pencil'}}"></span>
-							</button>
-							<button ng-click='remove(contact)' class="btn">
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
-						</td>
-					</tr>
-					<tr ng-hide='contacts.length'><td>No contact</td></tr>
-				</tbody>
-			</table>
-			<p>{{tx.messageContacts}}</p>
+		<div class='container'>
+		
+			<div class="page-header">
+				<h1>Agenda</h1>
+			</div>
+
+			<ul class="nav nav-pills">
+				<li><a href="#/contact-list">Contacts</a></li>
+				<li><a href="#/about">About</a></li>
+			</ul>
+		
+			<div ng-view class="container" ></div>
+
 		</div>
 	</body>
 </html>
