@@ -1,57 +1,77 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/get', function(req, res) {
-	req.Contact.find(null, function(err,contacts) {
-	  if (err || !contacts) {
-			console.log("No contacts found");
-		} else {
-			res.send(contacts);
-		}
-	});
-});
+router.route('/')
 
-router.post('/remove', function(req, res) {
-	req.Contact.findOneAndRemove({_id:req.body._id}, function (err, contact) {
-		if (err || !contact) {
-			console.log("Error removing contact");
-		} else {
-			res.send(contact);
-		}
-	});
-});
-
-router.post('/save', function(req, res) {
-	console.log('body: ',req.body);
-	res.send('test');
-	/*
-	var p = new req.Photo(req.body);
-	p.save(function (err, contact) {
-		if (err || !contact) {
-			console.log("Error saving contact");
-			if (err) {
-				res.send(err);
+	// save
+	.post(function(req, res) {
+		var photo = {img:req.body.img.replace(/^data:image\/png;base64,/,"")};
+		var p = new req.Photo(photo);
+		p.save(function (err, new_photo) {
+			if (err || !new_photo) {
+				console.log("Error saving photo");
+				if (err) {
+					res.send(err);
+				}
+			} else {
+				res.send(new_photo);
 			}
-		} else {
-			res.send(contact);
-		}
-	});
-*/
-});
+		});
+	})
 
-router.post('/update', function(req, res) {
-	var contact_update = {name:req.body.name,phone:req.body.phone};
-	console.log(contact_update);
-	req.Contact.findByIdAndUpdate(req.body._id, contact_update, function (err, numAffected) {
-		if (err || !numAffected) {
-			console.log("Error updating contact");
-			if (err) {
-				res.send(err);
+	// get all
+	.get(function(req, res) {
+		req.Photo.find(null, function(err,photos) {
+		  if (err || !photos) {
+				console.log("No photo found");
+			} else {
+				res.send(photos);
 			}
-		} else {
-			res.send(numAffected);
-		}
-	});
-});
+		});
+	})
+
+;
+
+router.route('/:_id')
+
+	// get one
+	.get(function(req, res) {
+		req.Photo.findById(req.params._id, function(err, photo) {
+			if (err || !photo) {
+				console.log('No photo found');
+			} else {
+				res.send(photo);
+			}
+		});	
+	})
+	
+	// update
+	.put(function(req, res) {
+		req.Photo.findByIdAndUpdate(req.params._id, req.body, function (err, numAffected) {
+			if (err || !numAffected) {
+				console.log("Error updating photo");
+				if (err) {
+					res.send(err);
+				}
+			} else {
+				res.send(numAffected);
+			}
+		});
+	})
+
+	// delete
+	.delete(function(req, res) {
+		req.Photo.findOneAndRemove({_id:req.params._id}, function (err, photo) {
+			if (err || !photo) {
+				console.log("Error removing photo");
+			} else {
+				res.send(photo);
+			}
+		});
+	})
+;
 
 module.exports = router;
+
+
+

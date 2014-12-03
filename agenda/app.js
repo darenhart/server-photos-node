@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 
 var routes = require('./routes/index');
-var contacts = require('./routes/contact');
-var photos  = require('./routes/photo');
+var route_contact = require('./routes/contact');
+var route_photo  = require('./routes/photo');
 
 var app = express();
 
@@ -32,21 +32,11 @@ app.use(function(req, res, next) {
 
 // db
 var uri = "mongodb://0.0.0.0/teste";
-var db = mongoose.connect(uri);
-var Schema = mongoose.Schema;
-// contact schema
-var contactSchema = new Schema({
-    name: String,
-    phone: Number
-});
-var collection = 'contact';
-var Contact = mongoose.model('Contact', contactSchema, collection);
-// photo scema
-var photoSchema = new Schema({
-    img: { data: Buffer, contentType: String } 
-});
-var collection = 'photo';
-var Photo = mongoose.model('Photo', contactSchema, collection);
+mongoose.connect(uri);
+
+var Photo = require('./models/photo');
+var Contact = require('./models/contact');
+
 app.use(function(req,res,next){
     req.Contact = Contact;
     req.Photo = Photo;
@@ -54,8 +44,8 @@ app.use(function(req,res,next){
 });
 
 app.use('/', routes);
-app.use('/api/contact', contacts);
-app.use('/api/photo', photos);
+app.use('/api/contact', route_contact);
+app.use('/api/photo', route_photo);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
