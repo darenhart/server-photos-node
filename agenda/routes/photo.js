@@ -5,8 +5,7 @@ router.route('/')
 
 	// save
 	.post(function(req, res) {
-		var photo = {img:req.body.img.replace(/^data:image\/png;base64,/,"")};
-		var p = new req.Photo(photo);
+		var p = new req.Photo(req.body);
 		p.save(function (err, new_photo) {
 			if (err || !new_photo) {
 				console.log("Error saving photo");
