@@ -9,6 +9,7 @@ var mongoose = require("mongoose");
 var routes = require('./routes/index');
 var route_contact = require('./routes/contact');
 var route_photo  = require('./routes/photo');
+var route_user  = require('./routes/user');
 
 var app = express();
 
@@ -36,16 +37,19 @@ mongoose.connect(uri);
 
 var Photo = require('./models/photo');
 var Contact = require('./models/contact');
+var User = require('./models/user');
 
 app.use(function(req,res,next){
     req.Contact = Contact;
     req.Photo = Photo;
+    req.User = User;
     next();
 });
 
 app.use('/', routes);
 app.use('/api/contact', route_contact);
 app.use('/api/photo', route_photo);
+app.use('/api/user', route_user);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
