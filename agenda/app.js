@@ -10,6 +10,7 @@ var routes = require('./routes/index');
 var route_contact = require('./routes/contact');
 var route_photo  = require('./routes/photo');
 var route_user  = require('./routes/user');
+var route_item  = require('./routes/item');
 
 var app = express();
 
@@ -32,17 +33,19 @@ app.use(function(req, res, next) {
 });
 
 // db
-var uri = "mongodb://0.0.0.0/teste";
+var uri = "mongodb://0.0.0.0/test";
 mongoose.connect(uri);
 
 var Photo = require('./models/photo');
 var Contact = require('./models/contact');
 var User = require('./models/user');
+var Item = require('./models/item');
 
 app.use(function(req,res,next){
     req.Contact = Contact;
     req.Photo = Photo;
     req.User = User;
+    req.Item = Item;
     next();
 });
 
@@ -50,6 +53,7 @@ app.use('/', routes);
 app.use('/api/contact', route_contact);
 app.use('/api/photo', route_photo);
 app.use('/api/user', route_user);
+app.use('/api/item', route_item);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
